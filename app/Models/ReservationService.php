@@ -4,16 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class GuestReservation extends Pivot
+class ReservationService extends Pivot
 {
-  protected $table = 'guest_reservation';
+  protected $table = 'reservation_service';
   public $incrementing = true;
 
   protected $fillable = [
     'reservation_id',
-    'guest_id',
-    'type',
-    'checkin_at',
-    'checkout_at',
+    'service_id',
   ];
 }

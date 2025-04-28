@@ -10,13 +10,13 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('phones', function (Blueprint $table) {
+    Schema::create('payments', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('guest_id')->constrained('guests');
-      $table->string('phone_number')->unique();
-      $table->enum('type', ['home', 'work', 'mobile']);
+      $table->foreignId('reservation_id')->constrained('reservations');
+      $table->decimal('total');
+      $table->dateTime('payment_date');
+      $table->enum('current_status', ['pending', 'paid', 'canceled'])->default('pending');
       $table->timestamps();
-      $table->softDeletes();
     });
   }
 
@@ -25,6 +25,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('phones');
+    Schema::dropIfExists('payments');
   }
 };

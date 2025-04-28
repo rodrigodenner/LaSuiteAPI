@@ -10,13 +10,11 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('phones', function (Blueprint $table) {
+    Schema::create('regimes', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('guest_id')->constrained('guests');
-      $table->string('phone_number')->unique();
-      $table->enum('type', ['home', 'work', 'mobile']);
+      $table->string('description');
+      $table->boolean('is_active')->default(true);
       $table->timestamps();
-      $table->softDeletes();
     });
   }
 
@@ -25,6 +23,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('phones');
+    Schema::dropIfExists('regimes');
   }
 };

@@ -12,13 +12,12 @@ return new class extends Migration {
   {
     Schema::create('guests', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('user_id')->constrained('users');
       $table->string('name');
       $table->date('birthday');
       $table->string('cpf')->unique()->nullable();
       $table->string('rg')->unique()->nullable();
       $table->string('passport')->unique()->nullable();
-      $table->boolean('is_foreigner');
+      $table->boolean('is_foreigner')->default(false);
       $table->timestamps();
       $table->softDeletes();
     });

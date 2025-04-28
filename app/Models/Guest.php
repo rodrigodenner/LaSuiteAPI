@@ -23,10 +23,7 @@ class Guest extends Model
    'is_foreigner',
   ];
 
-  public function user(): BelongsTo
-  {
-    return $this->belongsTo(User::class);
-  }
+
   public function addresses(): HasMany
   {
     return $this->hasMany(Address::class);
