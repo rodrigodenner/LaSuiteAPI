@@ -12,7 +12,7 @@ Construído com **Laravel 12**, utilizando arquitetura MVC, Service Layer, DTOs 
 - Laravel 12
 - MySQL / PostgreSQL
 - Docker / Laravel Sail (opcional)
-- JWT ou Laravel Sanctum (para autenticação de API)
+- Laravel Sanctum (para autenticação de API)
 - Swagger/OpenAPI para documentação da API
 
 ---
@@ -132,19 +132,6 @@ ou, caso utilize Sail:
 - `app/Services` — Regras de negócio separadas dos controllers
 - `app/DTOs` — Data Transfer Objects
 - `database/migrations` — Scripts de banco de dados
-
----
-
-## 🤝 Contribuindo
-
-Pull requests são bem-vindos!  
-Para mudanças significativas, por favor abra uma issue antes para discutir o que você gostaria de alterar.
-
----
-
-## 🧑‍💻 Autor
-
-- **Rodrigo Denner** — [GitHub](https://github.com/rodrigodenner)
 
 ---
 
