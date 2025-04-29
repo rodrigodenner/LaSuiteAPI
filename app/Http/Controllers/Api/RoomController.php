@@ -317,7 +317,7 @@ class RoomController extends Controller
       return response()->json([
         'success' => true,
         'message' => 'Quarto criado com sucesso.',
-        'data'    => new RoomResource($room),
+        'data' => new RoomResource($room),
       ], Response::HTTP_CREATED);
     } catch (Throwable $e) {
       return response()->json([
@@ -388,21 +388,83 @@ class RoomController extends Controller
         'message' => 'Quarto atualizado com sucesso.',
         'data' => new RoomResource($room),
       ]);
-    }catch (ModelNotFoundException $e) {
-        return response()->json([
-          'success' => false,
-          'message' => 'Quarto não encontrado.',
-        ], Response::HTTP_NOT_FOUND);
-      } catch (\Throwable $e) {
-        \Log::error('Erro ao atualizar quarto', ['error' => $e->getMessage()]);
-        return response()->json([
-          'success' => false,
-          'message' => 'Erro inesperado ao atualizar o quarto. Tente novamente mais tarde.',
-        ], Response::HTTP_INTERNAL_SERVER_ERROR);
-      }
-
-
-
+    } catch (ModelNotFoundException $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Quarto não encontrado.',
+      ], Response::HTTP_NOT_FOUND);
+    } catch (\Throwable $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Erro inesperado ao atualizar o quarto. Tente novamente mais tarde.',
+      ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
   }
+
+  /**
+   * @OA\Delete(
+   *     path="/rooms/{id}",
+   *     tags={"Rooms"},
+   *     summary="Delete a room",
+   *     description="Deletes an existing room by ID. If the room does not exist, a 404 error is returned.",
+   *     operationId="deleteRoom",
+   *     security={{ "bearerAuth":{} }},
+   *     @OA\Parameter(
+   *         name="id",
+   *         in="path",
+   *         description="ID of the room to be deleted",
+   *         required=true,
+   *         @OA\Schema(type="integer")
+   *     ),
+   *     @OA\Response(
+   *         response=200,
+   *         description="Room successfully deleted.",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="success", type="boolean", example=true),
+   *             @OA\Property(property="message", type="string", example="Quarto excluído com sucesso.")
+   *         )
+   *     ),
+   *     @OA\Response(
+   *         response=404,
+   *         description="Room not found.",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="success", type="boolean", example=false),
+   *             @OA\Property(property="message", type="string", example="Quarto não encontrado.")
+   *         )
+   *     ),
+   *     @OA\Response(
+   *         response=500,
+   *         description="Unexpected server error.",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="success", type="boolean", example=false),
+   *             @OA\Property(property="message", type="string", example="Erro inesperado ao deletar o quarto. Tente novamente mais tarde.")
+   *         )
+   *     )
+   * )
+   */
+  public function destroy(string|int $id)
+  {
+    try {
+      $room = Room::findOrFail($id);
+      $room->delete();
+
+      return response()->json([
+        'success' => true,
+        'message' => 'Quarto excluído com sucesso.',
+      ], Response::HTTP_OK);
+
+    } catch (ModelNotFoundException $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Quarto não encontrado.',
+      ], Response::HTTP_NOT_FOUND);
+    } catch (Throwable $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Erro inesperado ao deletar o quarto. Tente novamente mais tarde.',
+      ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+  }
+
 
 }
