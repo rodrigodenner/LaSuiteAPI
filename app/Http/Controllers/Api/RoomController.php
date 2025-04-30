@@ -6,14 +6,14 @@ use App\DTOs\AvailableRoomsDTO;
 use App\DTOs\CreateRoomDTO;
 use App\DTOs\UpdateRoomDTO;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AvailableRoomsRequest;
-use App\Http\Requests\CreateRoomRequest;
+use App\Http\Requests\AvailableRoomsListRequest;
+use App\Http\Requests\RoomStoreRequest;
 use App\Http\Requests\UpdateRoomRequest;
 use App\Http\Resources\RoomResource;
 use App\Models\Room;
-use App\Services\RoomsService\AvailableRoomsService;
-use App\Services\RoomsService\RoomCreationService;
-use App\Services\RoomsService\RoomUpdateService;
+use App\Services\Rooms\AvailableRoomsService;
+use App\Services\Rooms\RoomCreationService;
+use App\Services\Rooms\RoomUpdateService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -159,7 +159,7 @@ class RoomController extends Controller
    *     )
    * )
    */
-  public function available(AvailableRoomsRequest $request)
+  public function available(AvailableRoomsListRequest $request)
   {
     try {
       $dto = AvailableRoomsDTO::makeFromRequest($request);
@@ -308,7 +308,7 @@ class RoomController extends Controller
    *     )
    * )
    */
-  public function store(CreateRoomRequest $request, RoomCreationService $roomCreationService)
+  public function store(RoomStoreRequest $request, RoomCreationService $roomCreationService)
   {
     try {
       $dto = CreateRoomDTO::makeFromRequest($request);

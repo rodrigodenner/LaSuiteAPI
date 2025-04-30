@@ -16,7 +16,8 @@ class Reservation extends Model
   protected $fillable = [
     'checkin_at',
     'checkout_at',
-    'deleted_at',
+    'adults',
+    'children',
   ];
 
   public function guests()
@@ -28,11 +29,6 @@ class Reservation extends Model
   public function rooms(): BelongsToMany
   {
     return $this->belongsToMany(Room::class);
-  }
-
-  public function services(): BelongsToMany
-  {
-    return $this->belongsToMany(Service::class);
   }
 
   public function payments(): HasMany

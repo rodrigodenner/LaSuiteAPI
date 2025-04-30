@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\RoomsService;
+namespace App\Services\Rooms;
 
 use App\DTOs\AvailableRoomsDTO;
 use App\Models\Room;

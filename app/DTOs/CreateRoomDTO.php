@@ -2,7 +2,7 @@
 
 namespace App\DTOs;
 
-use App\Http\Requests\CreateRoomRequest;
+use App\Http\Requests\RoomStoreRequest;
 
 readonly class CreateRoomDTO
 {
@@ -24,7 +24,7 @@ readonly class CreateRoomDTO
     public array $availabilities,
   ) {}
 
-  public static function makeFromRequest(CreateRoomRequest $request): self
+  public static function makeFromRequest(RoomStoreRequest $request): self
   {
     $data = $request->validated();
 

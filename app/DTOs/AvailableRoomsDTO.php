@@ -2,7 +2,7 @@
 
 namespace App\DTOs;
 
-use App\Http\Requests\AvailableRoomsRequest;
+use App\Http\Requests\AvailableRoomsListRequest;
 
 readonly class AvailableRoomsDTO
 {
@@ -16,7 +16,7 @@ readonly class AvailableRoomsDTO
     public ?string $sort,
   ) {}
 
-  public static function makeFromRequest(AvailableRoomsRequest $request): self
+  public static function makeFromRequest(AvailableRoomsListRequest $request): self
   {
     $data = $request->validated();
 

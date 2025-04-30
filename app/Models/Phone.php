@@ -14,7 +14,7 @@ class Phone extends Model
   protected $fillable = [
     'guest_id',
     'phone_number',
-    'phone_type'
+    'type'
   ];
 
   public function guest(): BelongsTo

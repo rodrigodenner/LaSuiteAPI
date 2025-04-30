@@ -19,8 +19,8 @@ namespace App\Documentation;
  * )
  *
  * @OA\Tag(
- *     name="Reservations",
- *     description="Endpoints for managing reservations (create, list, update, cancel)"
+ *     name="Guests",
+ *     description="Endpoints for managing hotel guests (CRUD operations, reservations)"
  * )
  */
 class SwaggerTagsDocumentation

@@ -15,6 +15,11 @@ class ReservationStatus extends Model
     'created_at',
   ];
 
+  public const STATUS_PENDING  = 'pending';
+  public const STATUS_PAID     = 'paid';
+  public const STATUS_FAILED   = 'failed';
+  public const STATUS_CANCELED = 'canceled';
+
   public function reservation(): BelongsTo
   {
     return $this->belongsTo(Reservation::class);

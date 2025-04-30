@@ -13,7 +13,7 @@ return new class extends Migration {
     Schema::create('phones', function (Blueprint $table) {
       $table->id();
       $table->foreignId('guest_id')->constrained('guests');
-      $table->string('phone_number')->unique();
+      $table->string('phone_number');
       $table->enum('type', ['home', 'work', 'mobile']);
       $table->timestamps();
       $table->softDeletes();
