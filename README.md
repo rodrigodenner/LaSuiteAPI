@@ -1,61 +1,140 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# LaSuiteAPI
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema de gerenciamento de quartos, tarifas, disponibilidades e reservas para hotelaria.
 
-## About Laravel
+Construído com **Laravel 12**, utilizando arquitetura MVC, Service Layer, DTOs e boas práticas de Clean Code.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Tecnologias Utilizadas
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.2+
+- Laravel 12
+- MySQL / PostgreSQL
+- Docker / Laravel Sail (opcional)
+- Laravel Sanctum (para autenticação de API)
+- Swagger/OpenAPI para documentação da API
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 📦 Instalação do Projeto
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 1. Clone o repositório
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+git clone https://github.com/rodrigodenner/LaSuiteAPI.git
+cd LaSuiteAPI
+```
 
-## Laravel Sponsors
+### 2. Instale as dependências
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+composer install
+```
 
-### Premium Partners
+### 3. Configure o ambiente
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+Copie o `.env.example` para `.env`:
 
-## Contributing
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Atualize as variáveis de ambiente:
 
-## Code of Conduct
+```
+APP_NAME=LaSuiteAPI
+APP_ENV=local
+APP_KEY= # Será gerado no próximo passo
+APP_URL=http://localhost
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=lasuite_db
+DB_USERNAME=root
+DB_PASSWORD=secret
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 4. Gere a chave da aplicação
 
-## License
+```bash
+php artisan key:generate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+### 5. Execute as migrations e seeders
+
+```bash
+php artisan migrate --seed
+```
+
+---
+
+### 6. (Opcional) Rode o projeto com Laravel Sail (Docker)
+
+```bash
+./vendor/bin/sail up
+```
+
+---
+
+## 🔒 Autenticação
+
+O sistema utiliza autenticação via **Laravel Sanctum**.
+
+1. Registre um novo usuário via API.
+2. Realize o login para obter o token.
+3. Envie o token no cabeçalho das requisições:
+
+```
+Authorization: Bearer {seu-token}
+```
+
+---
+
+## 📚 Documentação da API
+
+A documentação da API está disponível via Swagger.
+
+Após iniciar o projeto, acesse:
+
+```
+http://localhost/api/documentation
+```
+
+---
+
+## 🧪 Executando os Testes
+
+Para rodar os testes de API e unidades:
+
+```bash
+php artisan test
+```
+
+ou, caso utilize Sail:
+
+```bash
+./vendor/bin/sail test
+```
+
+---
+
+## 🛠️ Estrutura de Pastas
+
+- `app/Models` — Modelos Eloquent
+- `app/Http/Controllers` — Controladores da API
+- `app/Http/Requests` — Validações específicas
+- `app/Services` — Regras de negócio separadas dos controllers
+- `app/DTOs` — Data Transfer Objects
+- `database/migrations` — Scripts de banco de dados
+
+---
+
+## 📝 Licença
+
+Este projeto está licenciado sob a Licença MIT — veja o arquivo [LICENSE](LICENSE) para mais detalhes.
