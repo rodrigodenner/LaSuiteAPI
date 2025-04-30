@@ -13,7 +13,7 @@ use Illuminate\Http\Response;
  *     @OA\Info(
  *         title="hoteltaiyo API",
  *         version="1.0.0",
- *         description="API documentation for the Hotel Taiyo system using Bearer Token authentication."
+ *         description="API documentation for the La Suite  system using Bearer Token authentication."
  *     )
  * )
  */
