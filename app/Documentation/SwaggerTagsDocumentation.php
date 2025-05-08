@@ -19,7 +19,7 @@ namespace App\Documentation;
  * )
  *
  * @OA\Tag(
- *     name="Guests",
+ *     name="Reservation",
  *     description="Endpoints for managing hotel guests (CRUD operations, reservations)"
  * )
  */

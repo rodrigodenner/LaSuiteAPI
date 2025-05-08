@@ -18,7 +18,15 @@ class Reservation extends Model
     'checkout_at',
     'adults',
     'children',
+    'total',
   ];
+
+  protected $casts = [
+    'checkin_at'  => 'datetime',
+    'checkout_at' => 'datetime',
+    'created_at'  => 'datetime',
+  ];
+
 
   public function guests()
   {

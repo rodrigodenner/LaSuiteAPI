@@ -16,6 +16,7 @@ return new class extends Migration {
       $table->dateTime('checkout_at');
       $table->unsignedInteger('adults')->nullable();
       $table->unsignedInteger('children')->nullable();
+      $table->decimal('total', 10, 2)->nullable();
       $table->timestamps();
       $table->softDeletes();
     });

@@ -3,8 +3,12 @@
 namespace App\Services\Rooms;
 
 use App\DTOs\UpdateRoomDTO;
+use App\DTOs\ImageDTO;
+use App\DTOs\TariffDTO;
+use App\DTOs\AvailabilityDTO;
 use App\Models\Room;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\UploadedFile;
 
 class RoomUpdateService
 {
@@ -48,14 +52,19 @@ class RoomUpdateService
 
   private function saveImages(Room $room, array $images): void
   {
-    foreach ($images as $image) {
-      if ($image['file']) {
-        $path = $this->uploadImage($image['file'], $room->slug);
+    foreach ($images as $imageDTO) {
+      if (! $imageDTO instanceof ImageDTO) {
+        continue;
+      }
+
+      if ($imageDTO->file instanceof UploadedFile) {
+        $path = $this->uploadImage($imageDTO->file, $room->slug);
+
         $room->images()->create([
-          'image_path' => $path,
-          'description' => $image['description'] ?? null,
-          'alt' => $image['alt'] ?? null,
-          'featured' => $image['featured'] ?? false,
+          'image_path'  => $path,
+          'description' => $imageDTO->description,
+          'alt'         => $imageDTO->alt,
+          'featured'    => $imageDTO->featured,
         ]);
       }
     }
@@ -63,21 +72,39 @@ class RoomUpdateService
 
   private function saveTariffs(Room $room, array $tariffs): void
   {
-    foreach ($tariffs as $tariff) {
-      $room->tariffs()->create($tariff);
+    foreach ($tariffs as $tariffDTO) {
+      if (! $tariffDTO instanceof TariffDTO) {
+        continue;
+      }
+
+      $room->tariffs()->create([
+        'regime_id'         => $tariffDTO->regime_id,
+        'start_date'        => $tariffDTO->start_date,
+        'end_date'          => $tariffDTO->end_date,
+        'type'              => $tariffDTO->type,
+        'value_room'        => $tariffDTO->value_room,
+        'additional_adult'  => $tariffDTO->additional_adult,
+        'additional_child'  => $tariffDTO->additional_child,
+      ]);
     }
   }
 
   private function saveAvailabilities(Room $room, array $availabilities): void
   {
-    foreach ($availabilities as $availability) {
-      $room->availabilities()->create($availability);
+    foreach ($availabilities as $availabilityDTO) {
+      if (! $availabilityDTO instanceof AvailabilityDTO) {
+        continue;
+      }
+
+      $room->availabilities()->create([
+        'date'     => $availabilityDTO->date,
+        'quantity' => $availabilityDTO->quantity,
+      ]);
     }
   }
 
-  private function uploadImage($file, string $slug): string
+  private function uploadImage(UploadedFile $file, string $slug): string
   {
     return $file->store("rooms/{$slug}", 'public');
   }
 }
-

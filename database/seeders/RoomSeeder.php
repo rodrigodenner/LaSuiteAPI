@@ -39,7 +39,7 @@ class RoomSeeder extends Seeder
         $room->tariffs()->create([
           'regime_id'         => $regime->id,
           'start_date'        => now()->format('Y-m-d'),
-          'end_date'          => now()->addDays(9)->format('Y-m-d'),
+          'end_date' => now()->setYear(2030)->format('Y-m-d'),
           'type'              => 'daily',
           'value_room'        => $regime->description === 'Café da Manhã' ? rand(180, 250) : rand(300, 450),
           'additional_adult'  => rand(50, 100),

@@ -5,15 +5,18 @@ namespace App\Http\Controllers\Api;
 use App\DTOs\AvailableRoomsDTO;
 use App\DTOs\CreateRoomDTO;
 use App\DTOs\UpdateRoomDTO;
+use App\DTOs\UpdateTariffDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AvailableRoomsListRequest;
 use App\Http\Requests\RoomStoreRequest;
 use App\Http\Requests\UpdateRoomRequest;
+use App\Http\Requests\UpdateTariffsRequest;
 use App\Http\Resources\RoomResource;
 use App\Models\Room;
 use App\Services\Rooms\AvailableRoomsService;
 use App\Services\Rooms\RoomCreationService;
 use App\Services\Rooms\RoomUpdateService;
+use App\Services\Rooms\TariffUpdateService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -28,7 +31,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RoomController extends Controller
 {
-  public function __construct(protected AvailableRoomsService $availableRoomsService)
+  public function __construct(
+    protected AvailableRoomsService $availableRoomsService,
+    protected TariffUpdateService $tariffUpdateService,
+  )
   {
   }
 
@@ -399,6 +405,80 @@ class RoomController extends Controller
         'message' => 'Erro inesperado ao atualizar o quarto. Tente novamente mais tarde.',
       ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+  }
+
+
+  /**
+   * @OA\Put(
+   *     path="/rooms/{id}/tariffs",
+   *     tags={"Rooms"},
+   *     summary="Update room tariffs",
+   *     description="Updates the tariffs of a room for different regimes. Only value-related fields are updated.",
+   *     security={{ "bearerAuth": {} }},
+   *     @OA\Parameter(
+   *         name="id",
+   *         in="path",
+   *         required=true,
+   *         description="ID of the room",
+   *         @OA\Schema(type="integer", example=1)
+   *     ),
+   *     @OA\RequestBody(
+   *         required=true,
+   *         @OA\JsonContent(
+   *             required={"tariffs"},
+   *             @OA\Property(
+   *                 property="tariffs",
+   *                 type="array",
+   *                 @OA\Items(
+   *                     type="object",
+   *                     required={"regime_id", "value_room", "additional_adult", "additional_child"},
+   *                     @OA\Property(property="regime_id", type="integer", example=1),
+   *                     @OA\Property(property="value_room", type="number", format="float", example=350),
+   *                     @OA\Property(property="additional_adult", type="number", format="float", example=60),
+   *                     @OA\Property(property="additional_child", type="number", format="float", example=40)
+   *                 )
+   *             )
+   *         )
+   *     ),
+   *     @OA\Response(
+   *         response=200,
+   *         description="Tariffs updated successfully.",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="success", type="boolean", example=true),
+   *             @OA\Property(property="message", type="string", example="Tariffs updated successfully.")
+   *         )
+   *     ),
+   *     @OA\Response(
+   *         response=422,
+   *         description="No tariffs provided.",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="success", type="boolean", example=false),
+   *             @OA\Property(property="message", type="string", example="No tariffs were provided for update.")
+   *         )
+   *     )
+   * )
+   */
+  public function updateTariffs(UpdateTariffsRequest $request, int $roomId)
+  {
+    $tariffs = $request->validated()['tariffs'] ?? [];
+
+    if (empty($tariffs)) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Nenhuma tarifa foi enviada para atualização.',
+      ], Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    $dtos = collect($tariffs)
+      ->map(fn($tariff) => UpdateTariffDTO::fromArray($tariff))
+      ->toArray();
+
+    $this->tariffUpdateService->execute($roomId, $dtos);
+
+    return response()->json([
+      'success' => true,
+      'message' => 'Tarifas atualizadas com sucesso.',
+    ]);
   }
 
   /**

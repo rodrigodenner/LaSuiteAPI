@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\RegimeController;
-use App\Http\Controllers\Api\GuestController;
+use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,15 +25,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/{slug}', [RoomController::class, 'show']);
     Route::post('/', [RoomController::class, 'store']);
     Route::put('/{id}', [RoomController::class, 'update']);
+    Route::put('/{roomId}/tariffs', [RoomController::class, 'updateTariffs']);
     Route::delete('/{id}', [RoomController::class, 'destroy']);
   });
 
-  Route::prefix('guest')->group(function () {
-    Route::get('/', [GuestController::class, 'index']);
-    Route::post('/', [GuestController::class, 'store']);
-    Route::get('/{id}', [GuestController::class, 'show']);
-    Route::put('/{id}', [GuestController::class, 'update']);
-    Route::delete('/{id}', [GuestController::class, 'destroy']);
+  Route::prefix('reservations')->group(function () {
+    Route::get('/', [ReservationController::class, 'index']);
+    Route::post('/', [ReservationController::class, 'store']);
+    Route::get('/{reservationId}', [ReservationController::class, 'show']);
+    Route::put('/{reservationId}', [ReservationController::class, 'update']);
+    Route::delete('/{reservationId}', [ReservationController::class, 'destroy']);
   });
 });
 

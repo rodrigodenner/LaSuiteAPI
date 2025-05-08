@@ -6,6 +6,11 @@ use App\Http\Requests\RoomStoreRequest;
 
 readonly class CreateRoomDTO
 {
+  /**
+   * @param ImageDTO[] $images
+   * @param TariffDTO[] $tariffs
+   * @param AvailabilityDTO[] $availabilities
+   */
   public function __construct(
     public string $name,
     public string $slug,
@@ -30,13 +35,19 @@ readonly class CreateRoomDTO
 
     $images = collect($data['images'] ?? [])
       ->map(function ($image, $index) use ($request) {
-        return [
-          'file'        => $request->file("images.$index.file"),
-          'description' => $image['description'] ?? null,
-          'alt'         => $image['alt'] ?? null,
-          'featured'    => $image['featured'] ?? false,
-        ];
+        return ImageDTO::make(
+          $request->file("images.$index.file"),
+          $image
+        );
       })
+      ->toArray();
+
+    $tariffs = collect($data['tariffs'] ?? [])
+      ->map(fn(array $tariff) => TariffDTO::make($tariff))
+      ->toArray();
+
+    $availabilities = collect($data['availabilities'] ?? [])
+      ->map(fn(array $availability) => AvailabilityDTO::make($availability))
       ->toArray();
 
     return new self(
@@ -53,26 +64,26 @@ readonly class CreateRoomDTO
       type: $data['type'],
       number: $data['number'],
       images: $images,
-      tariffs: $data['tariffs'] ?? [],
-      availabilities: $data['availabilities'] ?? [],
+      tariffs: $tariffs,
+      availabilities: $availabilities
     );
   }
 
   public function toArray(): array
   {
     return [
-      'name'           => $this->name,
-      'slug'           => $this->slug,
-      'description'    => $this->description,
-      'featured'       => $this->featured,
-      'size'           => $this->size,
-      'max_adults'     => $this->max_adults,
-      'max_children'   => $this->max_children,
-      'double_beds'    => $this->double_beds,
-      'single_beds'    => $this->single_beds,
-      'floor'          => $this->floor,
-      'type'           => $this->type,
-      'number'         => $this->number,
+      'name'         => $this->name,
+      'slug'         => $this->slug,
+      'description'  => $this->description,
+      'featured'     => $this->featured,
+      'size'         => $this->size,
+      'max_adults'   => $this->max_adults,
+      'max_children' => $this->max_children,
+      'double_beds'  => $this->double_beds,
+      'single_beds'  => $this->single_beds,
+      'floor'        => $this->floor,
+      'type'         => $this->type,
+      'number'       => $this->number,
     ];
   }
 }

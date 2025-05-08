@@ -3,9 +3,11 @@
 namespace App\DTOs;
 
 use App\Http\Requests\UpdateRoomRequest;
+use Illuminate\Http\UploadedFile;
 
 readonly class UpdateRoomDTO
 {
+
   public function __construct(
     public ?string $name,
     public ?string $slug,
@@ -30,13 +32,19 @@ readonly class UpdateRoomDTO
 
     $images = collect($data['images'] ?? [])
       ->map(function ($image, $index) use ($request) {
-        return [
-          'file'        => $request->file("images.$index.file"),
-          'description' => $image['description'] ?? null,
-          'alt'         => $image['alt'] ?? null,
-          'featured'    => $image['featured'] ?? false,
-        ];
+        return ImageDTO::make(
+          $request->file("images.$index.file"),
+          $image
+        );
       })
+      ->toArray();
+
+    $tariffs = collect($data['tariffs'] ?? [])
+      ->map(fn(array $tariff) => TariffDTO::make($tariff))
+      ->toArray();
+
+    $availabilities = collect($data['availabilities'] ?? [])
+      ->map(fn(array $availability) => AvailabilityDTO::make($availability))
       ->toArray();
 
     return new self(
@@ -53,8 +61,8 @@ readonly class UpdateRoomDTO
       type: $data['type'] ?? null,
       number: $data['number'] ?? null,
       images: $images ?: null,
-      tariffs: $data['tariffs'] ?? null,
-      availabilities: $data['availabilities'] ?? null,
+      tariffs: $tariffs ?: null,
+      availabilities: $availabilities ?: null,
     );
   }
 }

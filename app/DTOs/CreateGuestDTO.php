@@ -2,7 +2,7 @@
 
 namespace App\DTOs;
 
-use App\Http\Requests\GuestStoreRequest;
+use App\Http\Requests\ReservationStoreRequest;
 
 readonly class CreateGuestDTO
 {
@@ -13,7 +13,7 @@ readonly class CreateGuestDTO
     public ReservationDTO $reservation,
   ) {}
 
-  public static function makeFromRequest(GuestStoreRequest $request): self
+  public static function makeFromRequest(ReservationStoreRequest $request): self
   {
     $data = $request->validated();
 
