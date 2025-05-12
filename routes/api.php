@@ -1,11 +1,18 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\RegimeController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () {
+  return response()->json([
+    'message' => 'BEM VINDO A API Hotel Taiyo'
+  ]);
+});
 
 //Auth routes
 Route::post('/generate-token', [AuthController::class, 'generateToken']);
@@ -35,6 +42,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/{reservationId}', [ReservationController::class, 'show']);
     Route::put('/{reservationId}', [ReservationController::class, 'update']);
     Route::delete('/{reservationId}', [ReservationController::class, 'destroy']);
+
+    Route::get('/{reservationId}/payment', [PaymentController::class, 'show']);
+    Route::post('/{reservationId}/pay', [PaymentController::class, 'pay']);
   });
 });
 

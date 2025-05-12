@@ -13,9 +13,16 @@ return new class extends Migration {
     Schema::create('payments', function (Blueprint $table) {
       $table->id();
       $table->foreignId('reservation_id')->constrained('reservations');
-      $table->decimal('total');
-      $table->dateTime('payment_date');
+      $table->decimal('total', 10, 2);
+      $table->dateTime('payment_date')->nullable();
       $table->enum('current_status', ['pending', 'paid', 'canceled'])->default('pending');
+      $table->enum('payment_method', ['credit_card', 'debit_card', 'pix'])->nullable();
+      $table->string('payment_id')->nullable();
+      $table->text('pix_payload')->nullable();
+      $table->text('pix_qrcode')->nullable();
+      $table->string('authorization_code')->nullable();
+      $table->string('tid')->nullable();
+      $table->json('details')->nullable();
       $table->timestamps();
     });
   }

@@ -22,6 +22,11 @@ namespace App\Documentation;
  *     name="Reservation",
  *     description="Endpoints for managing hotel guests (CRUD operations, reservations)"
  * )
+ *
+ * @OA\Tag(
+ *   name="Payments",
+ *   description="Endpoints for managing payments (credit card, bank transfer, etc.)"
+ * )
  */
 class SwaggerTagsDocumentation
 {

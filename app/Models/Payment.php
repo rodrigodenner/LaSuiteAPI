@@ -16,7 +16,20 @@ class Payment extends Model
     'total',
     'payment_date',
     'current_status',
+    'payment_method',
+    'payment_id',
+    'pix_payload',
+    'pix_qrcode',
+    'authorization_code',
+    'tid',
+    'details',
   ];
+
+  protected $casts = [
+    'payment_date' => 'datetime',
+    'details'      => 'array',
+  ];
+
 
 
   public function isPaid(): bool
@@ -32,6 +45,13 @@ class Payment extends Model
   public function statuses(): HasMany
   {
     return $this->hasMany(PaymentStatus::class);
+  }
+
+  public function setDetailsAttribute($value)
+  {
+    $allowedKeys = ['payment_id', 'authorization_code', 'tid', 'return_code', 'return_message'];
+    $filtered = array_filter($value, fn($key) => in_array($key, $allowedKeys), ARRAY_FILTER_USE_KEY);
+    $this->attributes['details'] = json_encode($filtered);
   }
 
 }

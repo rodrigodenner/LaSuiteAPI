@@ -14,8 +14,25 @@ class RegimeSeeder extends Seeder
     public function run(): void
     {
       Regime::insert([
-        ['description' => 'Café da Manhã', 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
-        ['description' => 'All Inclusive', 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
+        [
+          'description' => 'Café da Manhã incluso',
+          'is_active'   => true,
+          'created_at'  => now(),
+          'updated_at'  => now(),
+        ],
+        [
+          'description' => 'Café da Manhã não incluso',
+          'is_active'   => true,
+          'created_at'  => now(),
+          'updated_at'  => now(),
+        ],
+        [
+          'description' => 'All Inclusive',
+          'is_active'   => true,
+          'created_at'  => now(),
+          'updated_at'  => now(),
+        ],
       ]);
+
     }
 }
