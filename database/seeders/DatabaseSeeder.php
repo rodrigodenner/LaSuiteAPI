@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
 
     $this->call([
       RegimeSeeder::class,
-//      RoomSeeder::class,
+      RoomSeeder::class,
     ]);
   }
 }
